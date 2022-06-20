@@ -1,0 +1,58 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`relax-ng-simplify rule1 1`] = `
+"<grammar>
+  <element name=\\"foo\\">
+    <text></text>
+  </element>
+</grammar>
+"
+`;
+
+exports[`relax-ng-simplify rule2 1`] = `
+"<grammar
+  ><element name=\\"foo\\"><text></text></element
+></grammar>
+"
+`;
+
+exports[`relax-ng-simplify rule4 1`] = `
+"<grammar
+  ><element name=\\"foo\\"
+    ><attribute name=\\"attr\\"
+      ><choice
+        ><value type=\\"token\\">7</value><value type=\\"integer\\">9</value></choice
+      ></attribute
+    ><text></text></element
+></grammar>
+"
+`;
+
+exports[`relax-ng-simplify rule4 2`] = `
+"<grammar
+  ><element
+    ><name>foo</name
+    ><attribute
+      ><name>attr</name
+      ><choice
+        ><value type=\\"token\\">7</value><value type=\\"integer\\">9</value></choice
+      ></attribute
+    ><text></text></element
+></grammar>
+"
+`;
+
+exports[`relax-ng-simplify rule4 3`] = `
+"<element
+  ><name>ol</name
+  ><group
+    ><group
+      ><optional
+        ><attribute><name>cols</name><text></text></attribute></optional
+      ><optional
+        ><attribute
+          ><name>marker</name><text></text></attribute></optional></group
+    ><oneOrMore><ref name=\\"li\\"></ref></oneOrMore></group
+></element>
+"
+`;
