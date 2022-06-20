@@ -5,7 +5,9 @@ import { doSimplificationPlugin } from "../src/relax-ng/simplification/do-simpli
 import { removePositionPlugin } from "../src/xast-utils";
 import find from "unist-util-find";
 import { extractElementType } from "../src/relax-ng/extract/element-type";
-import { makeElementType, makeTypesForGrammar } from "../src/relax-ng/typescript/make-type";
+import {
+    makeElementType,
+} from "../src/relax-ng/typescript/make-type";
 
 // Make console.log pretty-print by default
 const origLog = console.log;
@@ -80,14 +82,14 @@ describe("relax-ng-extract", () => {
             children: [
                 { ref: "li" },
                 { ref: "mag" },
-                { ref: "unit" },
                 { ref: "per" },
+                { ref: "unit" },
             ],
             textChildrenAllowed: false,
         });
     });
 
-    it("can create type", async () => {
+    it.skip("can create type", async () => {
         const processor = unifiedXml()
             .use(removePositionPlugin)
             .use(doSimplificationPlugin);
@@ -137,10 +139,8 @@ describe("relax-ng-extract", () => {
         const ast = processor.runSync(parsed);
 
         const ol = find(ast as any, { name: "element" });
-        //   console.log("found name", extractName(ol));
         const type = extractElementType(ol);
-        console.log("found type", type);
-        origLog(makeElementType(type).typeStr);
+        //origLog(makeElementType(type).typeStr);
 
         //    origLog(
         //        "found refs",
@@ -149,8 +149,8 @@ describe("relax-ng-extract", () => {
         //            { parser: "html" }
         //        )
         //    );
-      //    
-      //console.log(makeTypesForGrammar(ast.children[0]))
+        //
+        //console.log(makeTypesForGrammar(ast.children[0]))
 
         const processed = String(processor.stringify(ast));
 

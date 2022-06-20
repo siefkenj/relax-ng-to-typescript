@@ -102,4 +102,4 @@ export const removePositionPlugin: Plugin<void[], Root, Root> = function () {
     };
 };
 
-export type TypeGuard<T> = (a: any) => a is T
+export type TypeGuard<T> = (a: any) => a is T;

@@ -1,25 +1,8 @@
-import { Plugin, Transformer, unified } from "unified";
-import { remove } from "unist-util-remove";
+import { Plugin, Transformer } from "unified";
 import { EXIT, visit } from "unist-util-visit";
-import { Root, Element } from "xast";
-import { fromXml } from "xast-util-from-xml";
-import { x } from "xastscript";
-import { elmMatcher, filterProp, isElement, expected } from "../xast-utils";
-import {
-    ensureChildrenArePairs,
-    getNormalizedElementName,
-    replaceIn,
-} from "./simplification/utils";
-import Slugger from "github-slugger";
-import {
-    NGDefine,
-    NGElement,
-    NGElementAttrName,
-    NGGrammar,
-    NGGrammarContext,
-    NGPattern,
-    NGRef,
-} from "./types";
+import { Root } from "xast";
+import { elmMatcher, expected } from "../xast-utils";
+import { NGDefine, NGElementAttrName, NGGrammar, NGPattern } from "./types";
 import { toString } from "xast-util-to-string";
 import {
     NGSimpDefine,
@@ -58,11 +41,11 @@ function parsePattern(elm: NGSimpPattern): NGPattern {
         case "oneOrMore":
         case "choice":
         case "group":
-          //  return {
-          //      type: "element",
-          //      name: "group",
-          //      children: elm.children.map(e => parsePattern(e)),
-          //  };
+        //  return {
+        //      type: "element",
+        //      name: "group",
+        //      children: elm.children.map(e => parsePattern(e)),
+        //  };
         case "interleave":
     }
     console.warn(`Failed to process element <${elm.name}>`);

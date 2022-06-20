@@ -1,4 +1,3 @@
-import fs from "node:fs/promises";
 import util from "node:util";
 import Prettier from "prettier";
 import { unifiedXml } from "./utils";
@@ -10,10 +9,6 @@ import {
     rule8,
 } from "../src/relax-ng/simplification";
 import { doSimplificationPlugin } from "../src/relax-ng/simplification/do-simplification-plugin";
-import { extractRefs } from "../src/relax-ng/extract/extract-children";
-import { NGSimpRoot } from "../src/relax-ng/simplification/simplified-types";
-import { extractElementType } from "../src/relax-ng/extract/element-type";
-import { makeTypesForGrammar } from "../src/relax-ng/typescript/make-type";
 import { renameRefsPlugin } from "../src/relax-ng/typescript/rename-refs-plugin";
 
 // Make console.log pretty-print by default
@@ -108,42 +103,5 @@ describe("relax-ng-simplify", () => {
 
         const formatted = Prettier.format(processed, { parser: "html" });
         expect(formatted).toMatchSnapshot();
-    });
-
-    it("doesn't lose children", () => {
-        const processor = unifiedXml()
-            .use(doSimplificationPlugin)
-            //.use(renameRefsPlugin);
-        const source = `
-<grammar>
-    <start>
-        <ref name="Foo" />
-    </start>
-    <define name="Foo">
-        <element name="author">
-          <element name="personname">
-              <text/>
-          </element>
-          <optional>
-            <element name="email">
-              <text/>
-            </element>
-          </optional>
-        </element>
-        <element name="author">
-              <text/>
-        </element>
-    </define>
-</grammar>
-`;
-        const inputXml = processor.parse(source);
-        let outputXml = processor.runSync(inputXml);
-        outputXml = unifiedXml().use(renameRefsPlugin).runSync(outputXml)
-        const processed = processor.stringify(outputXml) as unknown as string;
-
-        const formatted = Prettier.format(processed, { parser: "html" });
-        origLog(formatted);
-
-        //console.log(makeTypesForGrammar(outputXml.children[0]));
     });
 });

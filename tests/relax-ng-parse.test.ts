@@ -21,7 +21,7 @@ type x = {
 }
 
 describe("relax-ng-parse", () => {
-    it("can parse RELAX-NG XML", async () => {
+    it.skip("can parse RELAX-NG XML", async () => {
         const processor = unifiedXml()
             .use(removePositionPlugin)
             .use(doSimplificationPlugin);

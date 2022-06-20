@@ -112,9 +112,6 @@ export function makeTypesForGrammar(grammar: NGSimpGrammar): {
     const allDefsMap: Record<string, NGSimpDefine> = Object.fromEntries(
         allDefs.map((def) => [def.attributes.name, def])
     );
-    
-    console.log(allDefsMap["ElementAuthor"])
-    console.log(toXml(allDefsMap["ElementAuthor"]))
 
     // `XMLText` is a special node that we create separately
     const exportedRefs: Record<string, JSONGrammarItem> = {
