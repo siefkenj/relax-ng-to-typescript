@@ -53,7 +53,7 @@ async function main(grammarFile: string, outDir: string) {
     // Write out the intermediate (simplified) XML
     const formattedXml = Prettier.format(toXml(ast), { parser: "html" });
     const xmlOutFile = path.join(outDir, "simplified-grammar.xml");
-    origLog(chalk.red("Writing JSON grammar to", xmlOutFile));
+    origLog(chalk.red("Writing simplified grammar to", xmlOutFile));
     await fs.writeFile(xmlOutFile, formattedXml, "utf-8");
 
     const grammarTypes = makeTypesForGrammar(ast.children[0]);
