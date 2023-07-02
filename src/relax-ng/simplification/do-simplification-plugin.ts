@@ -1,5 +1,5 @@
 import { Plugin } from "unified";
-import { Root } from "xast-util-to-string";
+import type { Root } from "xast";
 import { rule1 } from "./rule-01";
 import { rule2 } from "./rule-02";
 import { rule3 } from "./rule-03";

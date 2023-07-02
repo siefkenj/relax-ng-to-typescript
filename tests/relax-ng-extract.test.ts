@@ -3,11 +3,10 @@ import Prettier from "prettier";
 import { unifiedXml } from "./utils";
 import { doSimplificationPlugin } from "../src/relax-ng/simplification/do-simplification-plugin";
 import { removePositionPlugin } from "../src/xast-utils";
-import find from "unist-util-find";
+import { find } from "unist-util-find";
 import { extractElementType } from "../src/relax-ng/extract/element-type";
-import {
-    makeElementType,
-} from "../src/relax-ng/typescript/make-type";
+import { makeElementType } from "../src/relax-ng/typescript/make-type";
+import { NGSimpElement } from "../src/relax-ng/simplification/simplified-types";
 
 // Make console.log pretty-print by default
 const origLog = console.log;
@@ -68,8 +67,10 @@ describe("relax-ng-extract", () => {
         const parsed = processor.parse(source);
         const ast = processor.runSync(parsed);
 
-        const ol = find(ast as any, { name: "element" });
-        expect(extractElementType(ol)).toEqual({
+        const ol: NGSimpElement | undefined = find(ast as any, {
+            name: "element",
+        });
+        expect(extractElementType(ol!)).toEqual({
             name: "ol",
             type: "element",
             attributes: {
@@ -138,8 +139,10 @@ describe("relax-ng-extract", () => {
         const parsed = processor.parse(source);
         const ast = processor.runSync(parsed);
 
-        const ol = find(ast as any, { name: "element" });
-        const type = extractElementType(ol);
+        const ol: NGSimpElement | undefined = find(ast as any, {
+            name: "element",
+        });
+        const type = extractElementType(ol!);
         //origLog(makeElementType(type).typeStr);
 
         //    origLog(
