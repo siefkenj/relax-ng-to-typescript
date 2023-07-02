@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`relax-ng-simplify rule1 1`] = `
+exports[`relax-ng-simplify > rule1 1`] = `
 "<grammar>
   <element name=\\"foo\\">
     <text></text>
@@ -9,14 +9,14 @@ exports[`relax-ng-simplify rule1 1`] = `
 "
 `;
 
-exports[`relax-ng-simplify rule2 1`] = `
+exports[`relax-ng-simplify > rule2 1`] = `
 "<grammar
   ><element name=\\"foo\\"><text></text></element
 ></grammar>
 "
 `;
 
-exports[`relax-ng-simplify rule4 1`] = `
+exports[`relax-ng-simplify > rule4 1`] = `
 "<grammar
   ><element name=\\"foo\\"
     ><attribute name=\\"attr\\"
@@ -28,7 +28,7 @@ exports[`relax-ng-simplify rule4 1`] = `
 "
 `;
 
-exports[`relax-ng-simplify rule4 2`] = `
+exports[`relax-ng-simplify > rule4 2`] = `
 "<grammar
   ><element
     ><name>foo</name
@@ -42,7 +42,7 @@ exports[`relax-ng-simplify rule4 2`] = `
 "
 `;
 
-exports[`relax-ng-simplify rule4 3`] = `
+exports[`relax-ng-simplify > rule4 3`] = `
 "<element
   ><name>ol</name
   ><group

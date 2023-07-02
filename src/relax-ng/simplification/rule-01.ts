@@ -1,6 +1,7 @@
 import { Plugin } from "unified";
 import { remove } from "unist-util-remove";
-import { Root } from "xast";
+import type { TestFunctionAnything } from "unist-util-is";
+import type { Root } from "xast";
 import { NG_XML_NODES } from "../types";
 
 /**
@@ -28,6 +29,6 @@ export const rule1: Plugin<void[], Root, Root> = function () {
     }
 
     return (tree) => {
-        remove(tree, shouldRemove);
+        remove(tree, shouldRemove as TestFunctionAnything);
     };
 };

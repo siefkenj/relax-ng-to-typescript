@@ -1,5 +1,5 @@
 import { Plugin, unified } from "unified";
-import { Root } from "xast";
+import type { Root } from "xast";
 import { fromXml } from "xast-util-from-xml";
 import { filterProp, isElement } from "../xast-utils";
 import { simplifiedGrammarToJson } from "./relax-ng-normalize";
