@@ -1,3 +1,4 @@
+import { describe, it, expect } from "vitest";
 import fs from "node:fs/promises";
 import util from "node:util";
 import { toXml } from "xast-util-to-xml";
@@ -16,9 +17,9 @@ console.log = (...args) => {
 
 type x = {
     foo: string;
-    "bar": string;
+    bar: string;
     1: string;
-}
+};
 
 describe("relax-ng-parse", () => {
     it.skip("can parse RELAX-NG XML", async () => {

@@ -1,3 +1,4 @@
+import { describe, it, expect } from "vitest";
 import util from "node:util";
 import Prettier from "prettier";
 import { unifiedXml } from "./utils";
