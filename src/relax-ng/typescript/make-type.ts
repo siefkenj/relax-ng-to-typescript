@@ -8,8 +8,10 @@ import {
 import {
     NGSimpDefine,
     NGSimpGrammar,
+    NGSimpRef,
 } from "../simplification/simplified-types";
 import { normalizeTypeName } from "./normalize-type-name";
+import { NGElement, NGMethod } from "../types";
 
 // Basic XML element names
 const XML_ELEMENT = "XMLElement";
@@ -106,8 +108,14 @@ export function makeTypesForGrammar(grammar: NGSimpGrammar): {
 } {
     const start = grammar.children[0];
     const allDefs = grammar.children.slice(1) as NGSimpDefine[];
-    const startRef = start.children[0];
-    expected(startRef, "ref");
+    let startRef = start.children[0];
+    //console.log(start.children);
+    try {
+        expected(startRef, "ref");
+    } catch {
+        startRef = findElementRefInChoices(startRef as any, "ElementPretext");
+        expected(startRef, "ref");
+    }
 
     const allDefsMap: Record<string, NGSimpDefine> = Object.fromEntries(
         allDefs.map((def) => [def.attributes.name, def])
@@ -165,4 +173,24 @@ export function makeTypesForGrammar(grammar: NGSimpGrammar): {
  */
 function generateTypeForMissingRef(typeName: string): string {
     return `type ${typeName} = unknown;`;
+}
+
+/**
+ * Drill down a `<choice>...</choice>` blocks and find the first ref
+ * whose initial pattern matches the given `namePrefix`.
+ */
+function findElementRefInChoices(elm: NGMethod, namePrefix: string): NGSimpRef {
+    const allFlatRefs: NGSimpRef[] = [];
+    visit(elm as any, "element", (el) => {
+        if (el.name === "ref") allFlatRefs.push(el);
+    });
+
+    const ret = allFlatRefs.find((ref) =>
+        ref.attributes.name.startsWith(namePrefix)
+    );
+
+    if (ret) {
+        return ret;
+    }
+    throw new Error(`Could not find ref with prefix ${namePrefix}`);
 }
