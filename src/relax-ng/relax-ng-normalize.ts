@@ -100,7 +100,7 @@ export const simplifiedGrammarToJson: Plugin<void[], Root, NGGrammar> =
         return (tree) => {
             let grammar: NGSimpGrammar | null = null as NGSimpGrammar | null;
             visit(tree, elmMatcher("grammar"), (node) => {
-                grammar = node as NGSimpGrammar;
+                grammar = node as any as NGSimpGrammar;
                 return EXIT;
             });
             if (!grammar) {

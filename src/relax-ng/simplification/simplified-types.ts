@@ -4,7 +4,7 @@
 
 import { Element as XMLElement, Text as XMLText, Root as XMLRoot } from "xast";
 
-export interface NGSimpRoot extends XMLRoot {
+export interface NGSimpRoot extends Omit<XMLRoot, "children"> {
     children: [NGSimpGrammar];
 }
 

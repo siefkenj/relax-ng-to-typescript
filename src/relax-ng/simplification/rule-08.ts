@@ -31,6 +31,7 @@ export const rule8: Plugin<void[], Root, Root> = function () {
                     type: "element",
                     name: "name",
                     children: [{ type: "text", value: name }],
+                    attributes: {},
                 });
             }
         });

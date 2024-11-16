@@ -15,7 +15,7 @@ export function parseRelaxNgBasic(input: string) {
     let parsed = processor.parse(input) as Root;
     // Remove all position information. We don't care about it and it clutters our output
     parsed = filterProp(parsed, "position");
-    parsed = processor.runSync(parsed);
+    parsed = processor.runSync(parsed) as any as Root;
 
     const postProcessor = unified().use(simplifiedGrammarToJson);
     return postProcessor.runSync(parsed);
