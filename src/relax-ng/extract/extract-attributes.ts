@@ -6,6 +6,7 @@ import {
     NGSimpPattern,
 } from "../simplification/simplified-types";
 import { extractName } from "./extract-name";
+import { Element as XMLElement, Text as XMLText } from "xast";
 
 /**
  * Extracts a list of attribute types as string that, when printed,
@@ -53,12 +54,12 @@ export function extractAttributes(elm: NGSimpElement) {
     const contents = elm.children[1];
     const attributes: Record<string, { optional: boolean; type: string[] }> =
         {};
-    visitParents(contents, elmMatcher("attribute"), (node, parents) => {
+    visitParents(contents, elmMatcher("attribute"), (node: XMLElement, parents) => {
         expected(node, "attribute");
-        const name = extractName(node);
+        const name = extractName(node as any);
         // If there is a choice in the `parents` that means this attribute is not always present!
         const optional = parents.some((x) => x.name === "choice");
-        const type = extractAttributeType(node.children[1]);
+        const type = extractAttributeType((node as any).children[1]);
         attributes[name] = { optional, type };
     });
 

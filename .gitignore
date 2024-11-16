@@ -1,3 +1,7 @@
 dist
+dist-cli
+tmp
+simp
+pretext.rng
 node_modules
 .vscode

@@ -8,15 +8,16 @@
 import fs from "node:fs/promises";
 import util from "node:util";
 import path from "node:path";
-import yargs from "yargs/yargs";
+import * as yargs from "yargs/yargs";
 import { toXml } from "xast-util-to-xml";
 import Prettier from "prettier";
-import { removePositionPlugin } from "../src/xast-utils";
-import { doSimplificationPlugin } from "../src/relax-ng/simplification/do-simplification-plugin";
-import { makeTypesForGrammar } from "../src/relax-ng/typescript/make-type";
+import { removePositionPlugin } from "../src";
+import { doSimplificationPlugin } from "../src";
+import { makeTypesForGrammar } from "../src";
 import { unifiedXml } from "../tests/utils";
-import { renameRefsPlugin } from "../src/relax-ng/typescript/rename-refs-plugin";
+import { renameRefsPlugin } from "../src";
 import chalk from "chalk";
+import type { Root, Element as XMLElement, Text as XMLText } from "xast";
 
 // Make console.log pretty-print by default
 const origLog = console.log;
@@ -47,11 +48,11 @@ async function main(grammarFile: string, outDir: string) {
     origLog(chalk.red("Reading grammar from", grammarFile));
     const source = await fs.readFile(grammarFile, "utf-8");
     const parsed = processor.parse(source);
-    let ast = processor.runSync(parsed);
+    let ast = processor.runSync(parsed as any as Root);
     ast = unifiedXml().use(renameRefsPlugin).runSync(ast);
 
     // Write out the intermediate (simplified) XML
-    const formattedXml = Prettier.format(toXml(ast), { parser: "xml" });
+    const formattedXml = await Prettier.format(toXml(ast as any as Root), { parser: "xml" });
     const xmlOutFile = path.join(outDir, "simplified-grammar.xml");
     origLog(chalk.red("Writing simplified grammar to", xmlOutFile));
     await fs.writeFile(xmlOutFile, formattedXml, "utf-8");

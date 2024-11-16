@@ -2,7 +2,7 @@
 
 exports[`relax-ng-simplify > rule1 1`] = `
 "<grammar>
-  <element name=\\"foo\\">
+  <element name="foo">
     <text></text>
   </element>
 </grammar>
@@ -11,17 +11,17 @@ exports[`relax-ng-simplify > rule1 1`] = `
 
 exports[`relax-ng-simplify > rule2 1`] = `
 "<grammar
-  ><element name=\\"foo\\"><text></text></element
+  ><element name="foo"><text></text></element
 ></grammar>
 "
 `;
 
 exports[`relax-ng-simplify > rule4 1`] = `
 "<grammar
-  ><element name=\\"foo\\"
-    ><attribute name=\\"attr\\"
+  ><element name="foo"
+    ><attribute name="attr"
       ><choice
-        ><value type=\\"token\\">7</value><value type=\\"integer\\">9</value></choice
+        ><value type="token">7</value><value type="integer">9</value></choice
       ></attribute
     ><text></text></element
 ></grammar>
@@ -35,7 +35,7 @@ exports[`relax-ng-simplify > rule4 2`] = `
     ><attribute
       ><name>attr</name
       ><choice
-        ><value type=\\"token\\">7</value><value type=\\"integer\\">9</value></choice
+        ><value type="token">7</value><value type="integer">9</value></choice
       ></attribute
     ><text></text></element
 ></grammar>
@@ -52,7 +52,7 @@ exports[`relax-ng-simplify > rule4 3`] = `
       ><optional
         ><attribute
           ><name>marker</name><text></text></attribute></optional></group
-    ><oneOrMore><ref name=\\"li\\"></ref></oneOrMore></group
+    ><oneOrMore><ref name="li"></ref></oneOrMore></group
 ></element>
 "
 `;

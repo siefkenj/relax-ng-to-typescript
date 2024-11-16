@@ -4,6 +4,15 @@ import dts from "vite-plugin-dts";
 import * as path from "node:path";
 import { viteStaticCopy, TransformOption } from "vite-plugin-static-copy";
 
+// These are the dependencies that will not be bundled into the library.
+const EXTERNAL_DEPS = [
+    "yargs",
+    "prettier",
+    "node:fs/promises",
+    "node:util",
+    "node:path",
+];
+
 // A build configuration for the library version of the build.
 export default defineConfig({
     plugins: [
@@ -23,20 +32,25 @@ export default defineConfig({
     ],
     build: {
         lib: {
-            entry: { index: "src/index.ts" },
+            entry: { index: "scripts/generate-typescript.ts" },
             formats: ["es"],
         },
-        outDir: "dist",
+        outDir: "dist-cli",
         sourcemap: true,
+        rollupOptions: {
+            external: EXTERNAL_DEPS,
+            output: {
+                globals: Object.fromEntries(
+                    EXTERNAL_DEPS.map((dep) => [dep, dep]),
+                ),
+            },
+        },
     },
 
     test: {
         globals: true,
     },
 });
-
-// These are the dependencies that will not be bundled into the library.
-const EXTERNAL_DEPS = ["react", "react-dom", "styled-components"];
 
 /**
  * Trim and modify the `package.json` file so that it is suitable for publishing.

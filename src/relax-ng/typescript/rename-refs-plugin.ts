@@ -3,6 +3,7 @@ import { visit } from "unist-util-visit";
 import { isElement } from "../../xast-utils";
 import { NGSimpRoot } from "../simplification/simplified-types";
 import { normalizeTypeName } from "./normalize-type-name";
+import { Root, Element as XMLElement, Text as XMLText } from "xast";
 
 /**
  * UnifiedJs plugin that renames all references to make sure they start with the word `Element`
@@ -13,11 +14,11 @@ export const renameRefsPlugin: Plugin<never[], NGSimpRoot, NGSimpRoot> =
         return (tree) => {
             // Compute what all the existing ref names are and what they should be renamed to
             const refNames: Record<string, string> = {};
-            visit(tree, isElement, (node) => {
+            visit(tree, isElement, (node: XMLElement) => {
                 if (!(node.name === "define")) {
                     return;
                 }
-                refNames[node.attributes.name] = node.attributes.name;
+                refNames[node.attributes.name!] = node.attributes.name!;
             });
             // We iterate over keys instead of doing a `for in` loop because we mutate
             // `refNames` in the loop.
@@ -44,13 +45,13 @@ export const renameRefsPlugin: Plugin<never[], NGSimpRoot, NGSimpRoot> =
 
             // First thing to do is to rename all refs as their Typescript type names.
             const usedNames: Set<string> = new Set();
-            visit(tree, isElement, (node) => {
+            visit(tree, isElement, (node: XMLElement) => {
                 if (node.name === "ref") {
-                    if (refNames[node.attributes.name]) {
-                        node.attributes.name = refNames[node.attributes.name];
+                    if (refNames[node.attributes.name!]) {
+                        node.attributes.name = refNames[node.attributes.name!];
                     } else {
                         const newName = normalizeTypeName(
-                            node.attributes.name,
+                            node.attributes.name!,
                             "Element"
                         );
                         console.warn(
@@ -60,7 +61,7 @@ export const renameRefsPlugin: Plugin<never[], NGSimpRoot, NGSimpRoot> =
                     }
                 }
                 if (node.name === "define") {
-                    node.attributes.name = refNames[node.attributes.name];
+                    node.attributes.name = refNames[node.attributes.name!];
                 }
             });
             return tree;

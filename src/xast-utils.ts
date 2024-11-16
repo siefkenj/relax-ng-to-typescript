@@ -20,7 +20,7 @@ export function onlyElementsAndText(nodes: Node[]): (XMLElement | XMLText)[] {
 export function elmMatcher<T extends string>(
     name: T
 ): (e: any) => e is XMLElement & { name: T } {
-    return convert<XMLElement>({ type: "element", name }) as any;
+    return convert<XMLElement>({ type: "element", name } as any) as any;
 }
 
 /**
@@ -75,7 +75,7 @@ export function expected<T extends string>(
         );
     }
     if (expectedTagName == null) {
-        // If no specific tag was given, we dont't check anything else
+        // If no specific tag was given, we don't check anything else
         return;
     }
     if (
@@ -98,7 +98,7 @@ export function expected<T extends string>(
 
 export const removePositionPlugin: Plugin<void[], Root, Root> = function () {
     return (tree) => {
-        removePosition(tree, true);
+        removePosition(tree, {force: true});
     };
 };
 
