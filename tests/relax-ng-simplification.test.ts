@@ -29,7 +29,7 @@ describe("relax-ng-simplify", () => {
 </grammar>`;
         const processed = String(processor.processSync(source));
 
-        const formatted = Prettier.format(processed, { parser: "html" });
+        const formatted = await Prettier.format(processed, { parser: "html" });
         expect(formatted).toMatchSnapshot();
     });
 
@@ -43,7 +43,7 @@ describe("relax-ng-simplify", () => {
 </grammar>`;
         const processed = String(processor.processSync(source));
 
-        const formatted = Prettier.format(processed, { parser: "html" });
+        const formatted = await Prettier.format(processed, { parser: "html" });
         expect(formatted).toMatchSnapshot();
     });
 
@@ -58,7 +58,7 @@ describe("relax-ng-simplify", () => {
 </grammar>`;
         const processed = String(processor.processSync(source));
 
-        const formatted = Prettier.format(processed, { parser: "html" });
+        const formatted = await Prettier.format(processed, { parser: "html" });
         expect(formatted).toMatchSnapshot();
     });
 
@@ -77,7 +77,7 @@ describe("relax-ng-simplify", () => {
 </grammar>`;
         const processed = String(processor.processSync(source));
 
-        const formatted = Prettier.format(processed, { parser: "html" });
+        const formatted = await Prettier.format(processed, { parser: "html" });
         expect(formatted).toMatchSnapshot();
     });
 
@@ -102,7 +102,7 @@ describe("relax-ng-simplify", () => {
 `;
         const processed = String(processor.processSync(source));
 
-        const formatted = Prettier.format(processed, { parser: "html" });
+        const formatted = await Prettier.format(processed, { parser: "html" });
         expect(formatted).toMatchSnapshot();
     });
 });
