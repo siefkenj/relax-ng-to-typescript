@@ -40,6 +40,12 @@ jobs:
             - name: Run tests
               run: npm test
 
+            - name: Build sample output
+              run: |
+                mkdir -p ./tmp
+                wget https://raw.githubusercontent.com/PreTeXtBook/pretext/refs/heads/master/schema/pretext.rng
+                npx vite-node scripts/generate-typescript.ts -- -g pretext.rng -o tmp/
+
 #            - name: Prepare for Github Pages
 #              run: |
 #                  mkdir -p ./website
