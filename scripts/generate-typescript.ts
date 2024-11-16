@@ -52,7 +52,10 @@ async function main(grammarFile: string, outDir: string) {
     ast = unifiedXml().use(renameRefsPlugin).runSync(ast);
 
     // Write out the intermediate (simplified) XML
-    const formattedXml = await Prettier.format(toXml(ast as any as Root), { parser: "xml" });
+    const formattedXml = await Prettier.format(toXml(ast as any as Root), {
+        parser: "xml",
+        plugins: ["@prettier/plugin-xml"],
+    });
     const xmlOutFile = path.join(outDir, "simplified-grammar.xml");
     origLog(chalk.red("Writing simplified grammar to", xmlOutFile));
     await fs.writeFile(xmlOutFile, formattedXml, "utf-8");
@@ -71,7 +74,7 @@ async function main(grammarFile: string, outDir: string) {
     const jsonOut = `export const jsonGrammar = ${JSON.stringify(
         grammarTypes.grammar,
         null,
-        4
+        4,
     )}`;
     await fs.writeFile(jsonOutFile, jsonOut, "utf-8");
 }
