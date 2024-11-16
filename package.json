@@ -1,23 +1,22 @@
 {
-    "name": "relax-ng-ts",
+    "name": "relax-ng-to-typescript",
     "version": "1.0.0",
-    "description": "",
+    "description": "A TypeScript library for working with Relax NG schemas",
     "main": "index.js",
     "type": "module",
+    "private": true,
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/siefkenj/relax-ng-to-typescript"
+    },
     "scripts": {
-        "build": "tsc",
+        "build": "vite build",
         "test": "vitest",
         "gen": "node --experimental-specifier-resolution=node --loader ts-node/esm scripts/generate-typescript"
     },
     "keywords": [],
     "author": "",
-    "license": "ISC",
-    "devDependencies": {
-        "@prettier/plugin-xml": "^3.4.1",
-        "prettier": "^3.3.3",
-        "typescript": "^5.6.3",
-        "vitest": "^2.1.5"
-    },
+    "license": "MIT",
     "dependencies": {
         "@types/github-slugger": "^2.0.0",
         "chalk": "^5.3.0",
@@ -36,6 +35,13 @@
         "xast-util-to-string": "^3.0.0",
         "xast-util-to-xml": "^4.0.0",
         "xastscript": "^4.0.0",
+        "@prettier/plugin-xml": "^3.4.1",
+        "prettier": "^3.3.3",
+        "typescript": "^5.6.3",
+        "vite-plugin-dts": "^4.3.0",
+        "vite-plugin-static-copy": "^2.1.0",
+        "vite-tsconfig-paths": "^5.1.2",
+        "vitest": "^2.1.5",
         "yargs": "^17.7.2"
     },
     "prettier": {
