@@ -8,7 +8,7 @@
 import fs from "node:fs/promises";
 import util from "node:util";
 import path from "node:path";
-import * as yargs from "yargs/yargs";
+import yargs from "yargs/yargs";
 import { toXml } from "xast-util-to-xml";
 import Prettier from "prettier";
 import { removePositionPlugin } from "../src";
