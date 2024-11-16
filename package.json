@@ -6,7 +6,7 @@
     "type": "module",
     "scripts": {
         "build": "tsc",
-        "test": "jest",
+        "test": "vitest",
         "gen": "node --experimental-specifier-resolution=node --loader ts-node/esm scripts/generate-typescript"
     },
     "keywords": [],
