@@ -46,9 +46,33 @@ export function ensureChildrenArePairs(
 export function getNormalizedElementName(node: Element) {
     expected(node, "element");
     const firstChild = node.children[0];
-    expected(firstChild, "name");
+    if (!isElement(firstChild)) {
+        throw new Error("Expected <element> first child to be a name class element");
+    }
 
-    return toString(firstChild);
+    const serializeNameClass = (nameClass: Element): string => {
+        switch (nameClass.name) {
+            case "name":
+                return `${toString(nameClass)}`;
+            case "anyName":
+                return "anyName";
+            case "nsName": {
+                const ns = nameClass.attributes?.ns ?? "";
+                return ns ? `nsName:${ns}` : "nsName";
+            }
+            // case "choice":
+            //     return `choice(${nameClass.children
+            //         .filter(isElement)
+            //         .map((c) => serializeNameClass(c))
+            //         .join("|")})`;
+            default:
+                throw new Error(
+                    `Unsupported element name class <${nameClass.name}> in normalized element name`
+                );
+        }
+    };
+
+    return serializeNameClass(firstChild);
 }
 
 /**

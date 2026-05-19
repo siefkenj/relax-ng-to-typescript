@@ -13,11 +13,14 @@ export function extractName(
     const nameNode = elm.children[0];
     switch (nameNode.name) {
         case "choice":
+            // A choice name-class represents multiple possible element names.
+            return "*";
         case "nsName":
+            // Namespace-restricted wildcard: local name is unconstrained.
+            return "*";
         case "anyName":
-            throw new Error(
-                `Extracting a name from a <${nameNode.name}> element is not supported`
-            );
+            // Full wildcard name-class.
+            return "*";
         case "name":
             return toString(nameNode);
     }
