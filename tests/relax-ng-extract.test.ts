@@ -16,6 +16,36 @@ console.log = (...args) => {
 };
 
 describe("relax-ng-extract", () => {
+    it("handles wildcard element name-classes", async () => {
+        const processor = unifiedXml()
+            .use(removePositionPlugin)
+            .use(doSimplificationPlugin);
+
+        const source = `<grammar><start>
+    <element>
+      <anyName/>
+      <text/>
+    </element>
+    </start></grammar>`;
+
+        const parsed = processor.parse(source);
+        const ast = processor.runSync(parsed);
+
+        const wildcardElement: NGSimpElement | undefined = find(ast as any, {
+            name: "element",
+        });
+
+        expect(wildcardElement).toBeTruthy();
+        expect(() => extractElementType(wildcardElement!)).not.toThrow();
+        expect(extractElementType(wildcardElement!)).toEqual({
+            name: "*",
+            type: "element",
+            attributes: {},
+            children: [],
+            textChildrenAllowed: true,
+        });
+    });
+
     it("can extract element type", async () => {
         const processor = unifiedXml()
             .use(removePositionPlugin)

@@ -1,5 +1,4 @@
 import { defineConfig } from "vitest/config";
-import viteTsconfigPaths from "vite-tsconfig-paths";
 import dts from "vite-plugin-dts";
 import * as path from "node:path";
 import { viteStaticCopy, TransformOption } from "vite-plugin-static-copy";
@@ -7,7 +6,6 @@ import { viteStaticCopy, TransformOption } from "vite-plugin-static-copy";
 // A build configuration for the library version of the build.
 export default defineConfig({
     plugins: [
-        viteTsconfigPaths(),
         dts({
             insertTypesEntry: true,
         }),
@@ -29,7 +27,9 @@ export default defineConfig({
         outDir: "dist",
         sourcemap: true,
     },
-
+    resolve: {
+        tsconfigPaths: true,
+    },
     test: {
         globals: true,
     },
@@ -77,7 +77,7 @@ function transformPackageJson(contents: string, filePath: string) {
         "./dist/package.json",
     );
     if (Array.isArray(pkg.files)) {
-        pkg.files = pkg.files.map((file) =>
+        pkg.files = pkg.files.map((file: string) =>
             getPathRelativeToPackageJson(file, outputPackageJsonPath),
         );
     }

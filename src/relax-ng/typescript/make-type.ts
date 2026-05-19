@@ -53,7 +53,8 @@ export function makeElementType(desc: ElementTypeDescriptor, refName?: string) {
             `interface ${name} extends ${XML_ELEMENT_WITH_NO_ATTRIBUTES} {`
         );
     }
-    ret.push(`  name: ${JSON.stringify(desc.name)};`);
+    const nameType = desc.name === "*" ? "string" : JSON.stringify(desc.name);
+    ret.push(`  name: ${nameType};`);
     if (hasAttributes) {
         ret.push(`  attributes: {`);
         ret.push(
