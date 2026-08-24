@@ -74,7 +74,7 @@ export const rule19: Plugin<void[], Root, Root> = function () {
                 delete expandableDefs[refName];
             }
         }
-        const haveVisited: WeakSet<Element> = new WeakSet();
+        // const haveVisited: WeakSet<Element> = new WeakSet();
         visit(
             tree,
             elmMatcher("ref") as TypeGuard<Element>,
@@ -86,17 +86,20 @@ export const rule19: Plugin<void[], Root, Root> = function () {
                 if (!expandableDefs[refName]) {
                     return;
                 }
-                // If we're here, there is a def that needs expanding
-                if (haveVisited.has(node)) {
-                    throw new Error(
-                        `Detected infinite loop when trying to expand ref name="${refName}"`
-                    );
-                }
-                haveVisited.add(node);
+                // this will fail because we revisit nodes at the moment to expand all childrens (any level deep nested and refered definitions)
+                // // If we're here, there is a def that needs expanding
+                // if (haveVisited.has(node)) {
+                //     throw new Error(
+                //         `Detected infinite loop when trying to expand ref name="${refName}"`
+                //     );
+                // }
+                // haveVisited.add(node);
 
                 parent.children = parent.children.flatMap((n) =>
                     n === node ? expandableDefs[refName].children : n
                 );
+                // as we changed the children we need to start over to expand anything needs expanding
+                return 0;
             }
         );
 
