@@ -1,10 +1,9 @@
 import { describe, it, expect } from "vitest";
 import fs from "node:fs/promises";
 import util from "node:util";
-import { toXml } from "xast-util-to-xml";
-import { parseRelaxNgBasic } from "../src/relax-ng/parse-relax-ng";
-import Prettier from "prettier";
 import { unifiedXml } from "./utils";
+import type { Root } from "xast";
+import { renameRefsPlugin } from "../src";
 import { removePositionPlugin } from "../src/xast-utils";
 import { doSimplificationPlugin } from "../src/relax-ng/simplification/do-simplification-plugin";
 import { makeTypesForGrammar } from "../src/relax-ng/typescript/make-type";
@@ -35,5 +34,18 @@ describe("relax-ng-parse", () => {
 
         //const formatted = Prettier.format(toXml(parsed.children[0]!.children[2]), {"parser": "html"})
         //origLog(formatted)
+    });
+    it("can parse TEI RELAX-NG XML", async () => {
+        const processor = unifiedXml()
+            .use(removePositionPlugin)
+            .use(doSimplificationPlugin);
+        const source = await fs.readFile("./resources/tei_all.rng", "utf-8");
+        const parsed = processor.parse(source);
+
+        let ast = processor.runSync(parsed as any as Root);
+        ast = unifiedXml().use(renameRefsPlugin).runSync(ast);
+        expect(ast).toBeTruthy()
+        const types = makeTypesForGrammar(ast.children[0]);
+        expect(types).toBeTruthy()
     });
 });
