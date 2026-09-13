@@ -30,7 +30,7 @@ export const rule12: Plugin<void[], Root, Root> = function () {
     function moreThanOneChildWarnIfZero(node: Element): boolean {
         if (node.children.length === 0) {
             console.warn(
-                `Expected exactly one child of <${node.name}> but found none`
+                `Expected exactly one child of <${node.name}> but found none`,
             );
             return false;
         }
@@ -68,13 +68,13 @@ export const rule12: Plugin<void[], Root, Root> = function () {
                 case "interleave":
                     const wrapResult = ensureChildrenArePairs(node, node.name);
                     if (wrapResult.shouldUnwrap) {
-                        // There is only one child. Its contents should replace itself
-                        console.warn("not implemented yet");
+                        node = node.children[0] as Element;
+                        return "skip"
                     }
                 case "element":
                     if (node.children.length < 2) {
                         console.warn(
-                            `Expected <element ...> to have at least 2 children but found ${node.children.length}`
+                            `Expected <element ...> to have at least 2 children but found ${node.children.length}`,
                         );
                         return;
                     }
@@ -83,11 +83,11 @@ export const rule12: Plugin<void[], Root, Root> = function () {
                     }
                     const remainingChildren = x(
                         "group",
-                        node.children.slice(1)
+                        node.children.slice(1),
                     );
                     ensureChildrenArePairs(
                         remainingChildren,
-                        remainingChildren.name
+                        remainingChildren.name,
                     );
                     node.children = [node.children[0], remainingChildren];
             }

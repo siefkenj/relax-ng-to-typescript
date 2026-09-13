@@ -5,3 +5,4 @@ simp
 pretext.rng
 node_modules
 .vscode
+coverage/

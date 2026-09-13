@@ -17,7 +17,7 @@ function isNotWhitespace(c: Root["children"][number]): boolean {
 export const rule4: Plugin<void[], Root, Root> = function () {
     return (tree) => {
         tree.children = tree.children.filter(isNotWhitespace);
-        const c = tree.children[0];
+        // const c = tree.children[0];
         visit(tree, elmMatcher("value") as TypeGuard<Element>, (node) => {
             if (!node.attributes?.type) {
                 node.attributes = node.attributes || {};
