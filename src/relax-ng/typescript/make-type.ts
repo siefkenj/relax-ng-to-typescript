@@ -109,17 +109,18 @@ export function makeTypesForGrammar(grammar: NGSimpGrammar): {
 } {
     const start = grammar.children[0];
     const allDefs = grammar.children.slice(1) as NGSimpDefine[];
-    let startRef = start.children[0];
-    let startRefs: NGSimpRef[] = [];
+    const startPattern = start.children[0];
+    let startRefs: NGSimpRef[];
     //console.log(start.children);
     try {
-        expected(startRef, "ref");
+        expected(startPattern, "ref");
+        startRefs = [startPattern as NGSimpRef];
     } catch {
-        startRefs = findElementRefsInChoices(startRef as any, "Element");
+        // A `start` pattern that isn't a bare `<ref>` is a (possibly deeply nested)
+        // `<choice>`; every element ref inside it is a valid start element.
+        startRefs = findElementRefsInChoices(startPattern as any, "Element");
     }
-    const startRefNames = startRefs
-        ? startRefs.map((e) => e.attributes.name)
-        : [(startRef as NGSimpRef).attributes.name];
+    const startRefNames = startRefs.map((e) => e.attributes.name);
 
     const allDefsMap: Record<string, NGSimpDefine> = Object.fromEntries(
         allDefs.map((def) => [def.attributes.name, def]),
@@ -133,7 +134,9 @@ export function makeTypesForGrammar(grammar: NGSimpGrammar): {
     const interfaces: string[] = [
         `type StartElement = ${startRefNames.join("|")};`,
     ];
-    const queue: string[] = startRefNames;
+    // The queue is drained by the loop below, so it must be a copy;
+    // `startRefNames` is still needed afterwards.
+    const queue: string[] = [...startRefNames];
     // Recursively export all the types that are needed
     while (queue.length > 0) {
         const refName = queue.pop() || "";
@@ -167,7 +170,7 @@ export function makeTypesForGrammar(grammar: NGSimpGrammar): {
             TYPES_PREAMBLE +
             "\n\n" +
             interfaces.map((i) => `export ${i}`).join("\n\n"),
-        grammar: { startType: startRef.attributes.name, refs: exportedRefs },
+        grammar: { startType: startRefNames[0], refs: exportedRefs },
     };
 }
 
@@ -180,8 +183,8 @@ function generateTypeForMissingRef(typeName: string): string {
 }
 
 /**
- * Drill down a `<choice>...</choice>` blocks and find the first ref
- * whose initial pattern matches the given `namePrefix`.
+ * Drill down a `<choice>...</choice>` blocks and find every ref
+ * whose name starts with the given `namePrefix`.
  */
 function findElementRefsInChoices(
     elm: NGMethod,
@@ -196,7 +199,7 @@ function findElementRefsInChoices(
         ref.attributes.name.startsWith(namePrefix),
     );
 
-    if (ret) {
+    if (ret.length > 0) {
         return ret;
     }
     throw new Error(`Could not find ref with prefix ${namePrefix}`);
